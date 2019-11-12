@@ -11,14 +11,21 @@ module.exports = class Parser {
     this.session = {};
   }
 
+  /**
+   * 
+   * @param {*} sourceFile The source APT.txt file to parse into JSON objects
+   * @param {*} onItem The function that takes the individual JSON objects, must return a Promise.
+   * @returns Promise
+   */
   parse(sourceFile, onItem) {
-    this.session.onItem = onItem;
+    this.session.onItem = onItem
     const liner = new lineByLine(sourceFile)
     let line;
     while (line = liner.next()) {
       _processLine(this, line.toString('ascii'))
-      this.lineCount++;
+      this.lineCount++
     }
+    return Promise.all(this.session.promises)
   }
 }
 
@@ -115,7 +122,7 @@ function _split(val, size) {
   if (val) {
     if (typeof size == "number") {
       var list = [];
-      for (var ndx = 0;ndx < val.length;ndx += size) {
+      for (var ndx = 0; ndx < val.length; ndx += size) {
         var part = val.substr(ndx, size).trim();
         if (part)
           list.push(part.replace(',', ''));

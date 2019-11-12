@@ -150,43 +150,43 @@ var certRecordFields = {
     session.airmencert.certificates.push(session.certrec);
   },
   fields: [{
-      name: "faaId",
-      size: 8,
-      ignore: true
-    },
-    {
-      name: "RECORD_TYPE",
-      size: 2,
-      ignore: true
-    },
-    {
-      name: "type",
-      size: 1,
-      map: CERT_TYPES
-    },
-    {
-      name: "level",
-      size: 1,
-      map: CERT_LEVELS
-    },
-    {
-      name: "expires",
-      size: 8,
-      type: "date",
-      format: "ddMMYYY"
-    },
-    {
-      name: "ratings",
-      size: 110,
-      split: 10,
-      set: setRatings
-    },
-    {
-      name: "typeRatings",
-      size: 990,
-      split: 10,
-      set: setRatings
-    }
+    name: "faaId",
+    size: 8,
+    ignore: true
+  },
+  {
+    name: "RECORD_TYPE",
+    size: 2,
+    ignore: true
+  },
+  {
+    name: "type",
+    size: 1,
+    map: CERT_TYPES
+  },
+  {
+    name: "level",
+    size: 1,
+    map: CERT_LEVELS
+  },
+  {
+    name: "expires",
+    size: 8,
+    type: "date",
+    format: "ddMMYYY"
+  },
+  {
+    name: "ratings",
+    size: 110,
+    split: 10,
+    set: setRatings
+  },
+  {
+    name: "typeRatings",
+    size: 990,
+    split: 10,
+    set: setRatings
+  }
   ]
 }
 
@@ -196,97 +196,101 @@ module.exports.fieldsets = {
     set: function (session, name, value) {
       session.airmencert[name] = value;
     },
-    before: function (session, onItem) {
+    before: function (session) {
       if (typeof session.airmencert != 'undefined') {
-        onItem(session.airmencert);
-        delete session.airmencert;
+        var promise = session.onItem(session.airmencert);
+        if (session.promises) {
+          session.promises.push(promise)
+        } else {
+          session.promises = [promise]
+        }
       }
       session.airmencert = {};
     },
-    after: function (session, onItem) {
+    after: function (session) {
 
     },
     fields: [{
-        name: "faaId",
-        size: 8
-      },
-      {
-        name: "RECORD_TYPE",
-        size: 2,
-        ignore: true
-      },
-      {
-        name: "FIRST_MIDDLE_NAME",
-        size: 30,
-        set: function (session, name, value) {
-          session.airmencert.fullname = value;
-        }
-      },
-      {
-        name: "LAST_SUFFIX_NAME",
-        size: 30,
-        set: function (session, name, value) {
-          session.airmencert.fullname += (' ' + value);
-        }
-      },
-      {
-        name: "street1",
-        size: 33,
-        set: setAddress
-      },
-      {
-        name: "street2",
-        size: 33,
-        set: setAddress
-      },
-      {
-        name: "city",
-        size: 17,
-        set: setAddress
-      },
-      {
-        name: "state",
-        size: 2,
-        set: setAddress
-      },
-      {
-        name: "zipcode",
-        size: 10,
-        set: setAddress
-      },
-      {
-        name: "country",
-        size: 18,
-        set: setAddress
-      },
-      {
-        name: "region",
-        size: 2
-      },
-      {
-        name: "class",
-        size: 1,
-        set: setMedical
-      },
-      {
-        name: "issued",
-        size: 6,
-        set: setMedical,
-        type: "date",
-        format: "MMYYYY"
-      },
-      {
-        name: "expires",
-        size: 6,
-        set: setMedical,
-        type: "date",
-        format: "MMYYYY"
-      },
-      {
-        name: "END",
-        size: 922,
-        ignore: true
+      name: "faaId",
+      size: 8
+    },
+    {
+      name: "RECORD_TYPE",
+      size: 2,
+      ignore: true
+    },
+    {
+      name: "FIRST_MIDDLE_NAME",
+      size: 30,
+      set: function (session, name, value) {
+        session.airmencert.fullname = value;
       }
+    },
+    {
+      name: "LAST_SUFFIX_NAME",
+      size: 30,
+      set: function (session, name, value) {
+        session.airmencert.fullname += (' ' + value);
+      }
+    },
+    {
+      name: "street1",
+      size: 33,
+      set: setAddress
+    },
+    {
+      name: "street2",
+      size: 33,
+      set: setAddress
+    },
+    {
+      name: "city",
+      size: 17,
+      set: setAddress
+    },
+    {
+      name: "state",
+      size: 2,
+      set: setAddress
+    },
+    {
+      name: "zipcode",
+      size: 10,
+      set: setAddress
+    },
+    {
+      name: "country",
+      size: 18,
+      set: setAddress
+    },
+    {
+      name: "region",
+      size: 2
+    },
+    {
+      name: "class",
+      size: 1,
+      set: setMedical
+    },
+    {
+      name: "issued",
+      size: 6,
+      set: setMedical,
+      type: "date",
+      format: "MMYYYY"
+    },
+    {
+      name: "expires",
+      size: 6,
+      set: setMedical,
+      type: "date",
+      format: "MMYYYY"
+    },
+    {
+      name: "END",
+      size: 922,
+      ignore: true
+    }
     ]
   },
   "01": certRecordFields,
