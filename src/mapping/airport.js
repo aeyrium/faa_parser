@@ -33,7 +33,12 @@ module.exports.fieldsets = {
     },
     before: function (session) {
       if (typeof session.airport != 'undefined') {
-        session.onItem(session.airport);
+        var promise = session.onItem(session.airport);
+        if (session.promises) {
+          session.promises.push(promise)
+        } else {
+          session.promises = [promise]
+        }
       }
       session.airport = {};
     },
