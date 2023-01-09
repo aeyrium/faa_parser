@@ -30,7 +30,7 @@
   "dependencies": {
     "case": "^1.6.1",
     "cli": "^1.0.1",
-    "firebase-admin": "^8.2.0",
+    "firebase-admin": "^11.4.1",
     "geofirex": "0.0.6",
     "moment": "^2.24.0",
     "n-readlines": "^1.0.0"
